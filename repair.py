@@ -51,7 +51,7 @@ def main():
 
     channel_ids = []
     for step, channel_id in enumerate(sorted_indices):
-        # Prune the channel
+        # Prune the channels
         channel_ids.append(channel_id)
         print("Pruned channel IDs at step {}:\n".format(step), channel_ids)
         pruned_model = Net_pruned(channel_ids)
@@ -61,8 +61,8 @@ def main():
 
         cl_label_p = np.argmax(pruned_model.predict(cl_x_valid), axis=1)
         clean_accuracy = np.mean(np.equal(cl_label_p, cl_y_valid))*100
-
         print('Clean validation classification accuracy on step {}: {}'.format(step, clean_accuracy))
+
         for i,x in enumerate(X):
             if(clean_accuracy_base-clean_accuracy>=x and len(pruned_models)<i+1):
                 pruned_models.append(pruned_model)
