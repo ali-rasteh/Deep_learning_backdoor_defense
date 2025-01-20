@@ -9,6 +9,16 @@ poisoned_data_filename = str(sys.argv[2])
 model_filename = str(sys.argv[3])
 
 def data_loader(filepath):
+    """
+    Loads data from an HDF5 file and returns the data and labels.
+    Args:
+        filepath (str): The path to the HDF5 file containing the data.
+    Returns:
+        tuple: A tuple containing:
+            - x_data (numpy.ndarray): The data array with shape (num_samples, height, width, channels).
+            - y_data (numpy.ndarray): The labels array.
+    """
+
     data = h5py.File(filepath, 'r')
     x_data = np.array(data['data'])
     y_data = np.array(data['label'])
@@ -17,6 +27,25 @@ def data_loader(filepath):
     return x_data, y_data
 
 def main():
+    """
+    Main function to evaluate the performance of a backdoor defense model.
+    This function loads clean and poisoned test datasets, loads a pre-trained model,
+    and evaluates the model's performance on both datasets. It prints the clean 
+    classification accuracy and the attack success rate.
+    The function performs the following steps:
+    1. Loads the clean and poisoned test datasets using the `data_loader` function.
+    2. Loads the pre-trained model using `keras.models.load_model`.
+    3. Predicts the labels for the clean test dataset and calculates the clean classification accuracy.
+    4. Predicts the labels for the poisoned test dataset and calculates the attack success rate.
+    Variables:
+    - clean_data_filename: Path to the clean test dataset file.
+    - poisoned_data_filename: Path to the poisoned test dataset file.
+    - model_filename: Path to the pre-trained model file.
+    Prints:
+    - Clean Classification accuracy: The accuracy of the model on the clean test dataset.
+    - Attack Success Rate: The success rate of the backdoor attack on the poisoned test dataset.
+    """
+
     cl_x_test, cl_y_test = data_loader(clean_data_filename)
     bd_x_test, bd_y_test = data_loader(poisoned_data_filename)
 
